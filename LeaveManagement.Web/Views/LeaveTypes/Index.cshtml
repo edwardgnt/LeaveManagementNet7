@@ -33,9 +33,38 @@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+@*                <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.Id">Delete</a>*@
+                <button data-id="@item.Id" asp-action="Delete" class="btn btn-danger deleteBtn" type="button">Delete</button>
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+<form id="deleteForm" asp-action="Delete">
+    <input id="leaveTypeId" name="Id" type="hidden" />
+</form>
+
+@section Scripts {
+    <script>
+            $(function() {
+                $('.deleteBtn').click(function(e) {
+                    swal({
+                        title: "Confirm",
+                        text: "Are you sure you want to delete this record?",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true
+                    }).then((confirm) => {
+                        if(confirm) {
+                            let btn = $(this);
+                            let id = btn.data("id");
+                            $('#leaveTypeId').val(id);
+                            $('#deleteForm').submit();
+                        }
+                    });
+                });
+            });
+
+    </script>
+}
